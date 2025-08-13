@@ -4,7 +4,7 @@
 
 wxIMPLEMENT_APP(App);
 
-bool App::OnINit() {
+bool App::OnInit() {
     MainFrame* mainFrame = new MainFrame("cute media player");
     mainFrame->Show();
     return true;
