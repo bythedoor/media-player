@@ -1,7 +1,7 @@
-# media-player
-a cute media player
+# media-player ✧˖°
+a cute media player :)
 
-## to do list
+## to do list ⋆˙⟡.ೃ࿔⋆
 - [x] fixing compiling problems with C++
 - [ ] add buttons (pause/continue, previous/next,...)
 - [ ] display photo of the media playing
