@@ -7,4 +7,3 @@ a cute media player :)
 - [ ] display photo of the media playing
 - [ ] add text of metadata (name of artist, name of the song,...)
 - [ ] add a progress bar
-

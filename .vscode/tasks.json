@@ -2,12 +2,12 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Build with clang++",
+      "label": "build-app",
       "type": "shell",
       "command": "/bin/bash",
       "args": [
         "-c",
-        "clang++ -std=c++17 App.cpp MainFrame.cpp -I/usr/lib64/wx/include/gtk3-unicode-3.2 -I/usr/include/wx-3.2 -D_FILE_OFFSET_BITS=64 -DWXUSINGDLL -D__WXGTK__ $(wx-config --libs) -o app"
+        "clang++ -std=c++17 MyApp.cpp MainFrame.cpp $(wx-config --cxxflags --libs) -o app"
       ],
       "problemMatcher": [],
       "group": {

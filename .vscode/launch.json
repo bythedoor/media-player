@@ -8,7 +8,7 @@
       "program": "${workspaceFolder}/app",
       "args": [],
       "cwd": "${workspaceFolder}",
-      "preLaunchTask": "build-app"
+      "preLaunchTask": "build-app",
     }
   ]
 }
