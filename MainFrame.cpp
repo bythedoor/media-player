@@ -21,24 +21,30 @@ wxEND_EVENT_TABLE()
 
 MainFrame::MainFrame(const wxString& title): wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxSize(800,600)) 
 {
-    wxPanel* panel = new wxPanel(this); // creating panel for buttons and text
+    // creating panel for the controls
+    wxPanel* panel = new wxPanel(this);
 
-    //text for displaying the music info
+    // text for displaying the music info
     wxStaticText* songText = new wxStaticText(panel, wxID_ANY, "nct wish - steady", wxPoint(335, 30));
 
-    //buttons for controlling the music
+    // buttons for controlling the music
     wxButton* playButton = new wxButton(panel, PLAY_BUTTON_ID, "play !", wxPoint(275, 500), wxSize(100, 35));
     wxButton* pauseButton = new wxButton(panel, PAUSE_BUTTON_ID, "pause...", wxPoint(425, 500), wxSize(100, 35));
 
     wxButton* previousButton = new wxButton(panel, wxID_ANY, "previous", wxPoint(150, 500), wxSize(100, 35));
     wxButton* nextButton = new wxButton(panel, wxID_ANY, "next", wxPoint(550, 500), wxSize(100, 35));
+
+    // intialising the musing playing
+    currMusic = new wxMediaCtrl(panel, wxID_ANY);
     
 }
 
+/* When the user clicks on the play button, 
+the app plays the current music file chosen */
+
 void MainFrame::OnPlayButtonClicked(wxCommandEvent& event)
 {
-    // current music playing
-    wxMediaCtrl* currMusic = new wxMediaCtrl(this, wxID_ANY);
+    // displays an error message if the file is not found
     if (!currMusic->Load(wxT("nct-wish-steady.mp3"))) {
         wxLogError("failed to load MP3 file :(");
     }
@@ -47,13 +53,12 @@ void MainFrame::OnPlayButtonClicked(wxCommandEvent& event)
     }
 }
 
+
+/* When the user clicks on the pause button, 
+the app stops the music currently playing */
+
 void MainFrame::OnPauseButtonClicked(wxCommandEvent& event) 
 {
-    wxMediaCtrl* currMusic = new wxMediaCtrl(this, wxID_ANY);
-    if (!currMusic->Load(wxT("nct-wish-steady.mp3"))) {
-        wxLogError("failed to load MP3 file :(");
-    }
-    else {
-        currMusic->Stop();
-    }
+
+    currMusic->Stop();
 }

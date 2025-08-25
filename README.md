@@ -5,7 +5,7 @@ a cute media player :)
 - [x] fixing compiling problems with C++
 - [x] add buttons (pause/continue, previous/next,...)
 - [x] add text of metadata (name of artist, name of the song,...)
-- [ ] make buttons play or stop a song
+- [x] make buttons play or stop a song
 - [ ] fetch local music files
 - [ ] display photo of the media playing
 - [ ] add a progress bar
