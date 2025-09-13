@@ -11,5 +11,6 @@ class MainFrame : public wxFrame
     private:
         void OnPlayButtonClicked(wxCommandEvent& event);
         void OnPauseButtonClicked(wxCommandEvent& event);
+        void OnFileButtonClicked(wxCommandEvent& event);
         wxDECLARE_EVENT_TABLE();
 };
