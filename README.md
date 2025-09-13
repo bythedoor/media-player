@@ -20,3 +20,7 @@ a cute media player :)
 ### 3. design
 - [ ] display photo of the media playing
 - [ ] the user can change the color/theme of the app
+
+## current look
+
+<img src="../media-player/github-assets/Screenshot_20250913_175847.png" alt="screenshot of the app">
