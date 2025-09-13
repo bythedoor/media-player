@@ -23,4 +23,4 @@ a cute media player :)
 
 ## current look
 
-<img src="../media-player/github-assets/Screenshot_20250913_175847.png" alt="screenshot of the app">
+![screenshot](github-assets/Screenshot_20250913_175847.png)
