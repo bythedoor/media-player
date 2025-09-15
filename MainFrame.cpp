@@ -1,24 +1,26 @@
 #include "MainFrame.h"
-#include "wx/chartype.h"
 #include "wx/event.h"
 #include "wx/gtk/filedlg.h"
 #include "wx/gtk/frame.h"
+#include "wx/gtk/slider.h"
 #include "wx/log.h"
 #include <wx/mediactrl.h>
 #include <wx/wx.h>
-
+using namespace std;
 
 enum IDs //setting different IDs for each button
 {    
     PLAY_BUTTON_ID = 2,
     PAUSE_BUTTON_ID = 3,
-    FILE_BUTTON_ID = 4
+    FILE_BUTTON_ID = 4,
+    VOLUME_SLIDER_ID = 5
 };
 
 wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
     EVT_BUTTON(PLAY_BUTTON_ID, MainFrame::OnPlayButtonClicked)
     EVT_BUTTON(PAUSE_BUTTON_ID, MainFrame::OnPauseButtonClicked)
     EVT_BUTTON(FILE_BUTTON_ID, MainFrame::OnFileButtonClicked)
+    EVT_SLIDER(VOLUME_SLIDER_ID, MainFrame::VolumeSliderControl)
 wxEND_EVENT_TABLE()
 
 
@@ -40,6 +42,8 @@ MainFrame::MainFrame(const wxString& title): wxFrame(nullptr, wxID_ANY, title, w
     wxButton* previousButton = new wxButton(panel, wxID_ANY, "previous", wxPoint(150, 500), wxSize(100, 35));
     wxButton* nextButton = new wxButton(panel, wxID_ANY, "next", wxPoint(550, 500), wxSize(100, 35));
 
+    volumeSlider = new wxSlider(panel, VOLUME_SLIDER_ID, 50, 0, 100);
+
     // intialising the musing playing
     currMusic = new wxMediaCtrl(panel, wxID_ANY);
 
@@ -55,7 +59,7 @@ the app plays the current music file chosen */
 void MainFrame::OnPlayButtonClicked(wxCommandEvent& event)
 {
     // displays an error message if the file is not found
-    if (!currMusic->Load(wxT("nct-wish-steady.mp3"))) {
+    if (!currMusic->Load(musicFilePath)) {
         wxLogError("failed to load MP3 file :(");
     }
     else {
@@ -65,14 +69,24 @@ void MainFrame::OnPlayButtonClicked(wxCommandEvent& event)
 
 
 /* When the user clicks on the pause button, 
-the app stops the music currently playing */
+the app pauses the music currently playing */
 
 void MainFrame::OnPauseButtonClicked(wxCommandEvent& event) 
 {
 
-    currMusic->Stop();
+    currMusic->Pause();
 }
 
 void MainFrame::OnFileButtonClicked(wxCommandEvent& event) {
+    wxFileDialog* openfileDialog = new wxFileDialog(this, "choose your music !", "/home/habenaria/Music/", ".mp3");
     
+    if (openfileDialog->ShowModal() == wxID_OK) {
+        musicFilePath = openfileDialog->GetPath();
+    }
+}
+
+void MainFrame::VolumeSliderControl(wxCommandEvent& event) {
+    float volumeValue = volumeSlider->GetValue();
+    cout << volumeValue;
+    currMusic->SetVolume( volumeValue/100);
 }
