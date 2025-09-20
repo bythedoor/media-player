@@ -1,8 +1,9 @@
 #include "MainFrame.h"
 #include "wx/event.h"
+#include "wx/gdicmn.h"
 #include "wx/gtk/filedlg.h"
 #include "wx/gtk/frame.h"
-#include "wx/gtk/slider.h"
+#include "wx/gtk/slider.h" 
 #include "wx/log.h"
 #include <wx/mediactrl.h>
 #include <wx/wx.h>
@@ -12,11 +13,15 @@ enum IDs //setting different IDs for each button
 {    
     PLAY_BUTTON_ID = 2,
     PAUSE_BUTTON_ID = 3,
-    FILE_BUTTON_ID = 4,
-    VOLUME_SLIDER_ID = 5
+    PREV_BUTTON_ID = 4,
+    NEXT_BUTTON_ID = 5,
+    VOLUME_SLIDER_ID = 6,
+    FILE_BUTTON_ID = 7,
+    
 };
 
-wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
+
+wxBEGIN_EVENT_TABLE(MainFrame, wxFrame) // linking each button with a function when clicked
     EVT_BUTTON(PLAY_BUTTON_ID, MainFrame::OnPlayButtonClicked)
     EVT_BUTTON(PAUSE_BUTTON_ID, MainFrame::OnPauseButtonClicked)
     EVT_BUTTON(FILE_BUTTON_ID, MainFrame::OnFileButtonClicked)
@@ -24,8 +29,7 @@ wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
 wxEND_EVENT_TABLE()
 
 
-MainFrame::MainFrame(const wxString& title): wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxSize(800,600)) 
-{
+MainFrame::MainFrame(const wxString& title): wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxSize(800,600)) {
     // creating panel for the controls
     wxPanel* panel = new wxPanel(this);
 
@@ -39,10 +43,11 @@ MainFrame::MainFrame(const wxString& title): wxFrame(nullptr, wxID_ANY, title, w
     wxButton* playButton = new wxButton(panel, PLAY_BUTTON_ID, "play !", wxPoint(275, 500), wxSize(100, 35));
     wxButton* pauseButton = new wxButton(panel, PAUSE_BUTTON_ID, "pause...", wxPoint(425, 500), wxSize(100, 35));
 
-    wxButton* previousButton = new wxButton(panel, wxID_ANY, "previous", wxPoint(150, 500), wxSize(100, 35));
-    wxButton* nextButton = new wxButton(panel, wxID_ANY, "next", wxPoint(550, 500), wxSize(100, 35));
+    wxButton* previousButton = new wxButton(panel, PREV_BUTTON_ID, "previous", wxPoint(150, 500), wxSize(100, 35));
+    wxButton* nextButton = new wxButton(panel, NEXT_BUTTON_ID, "next", wxPoint(550, 500), wxSize(100, 35));
 
     volumeSlider = new wxSlider(panel, VOLUME_SLIDER_ID, 50, 0, 100);
+    progressBar = new wxSlider(panel, wxID_ANY, 0, 0, 1000, wxPoint(2, 450));
 
     // intialising the musing playing
     currMusic = new wxMediaCtrl(panel, wxID_ANY);
@@ -56,24 +61,15 @@ MainFrame::MainFrame(const wxString& title): wxFrame(nullptr, wxID_ANY, title, w
 /* When the user clicks on the play button, 
 the app plays the current music file chosen */
 
-void MainFrame::OnPlayButtonClicked(wxCommandEvent& event)
-{
-    // displays an error message if the file is not found
-    if (!currMusic->Load(musicFilePath)) {
-        wxLogError("failed to load MP3 file :(");
-    }
-    else {
-        currMusic->Play();
-    }
+void MainFrame::OnPlayButtonClicked(wxCommandEvent& event) {
+    currMusic->Play();
 }
 
 
 /* When the user clicks on the pause button, 
 the app pauses the music currently playing */
 
-void MainFrame::OnPauseButtonClicked(wxCommandEvent& event) 
-{
-
+void MainFrame::OnPauseButtonClicked(wxCommandEvent& event) {
     currMusic->Pause();
 }
 
@@ -82,8 +78,17 @@ void MainFrame::OnFileButtonClicked(wxCommandEvent& event) {
     
     if (openfileDialog->ShowModal() == wxID_OK) {
         musicFilePath = openfileDialog->GetPath();
+        if (!currMusic->Load(musicFilePath)) {
+        wxLogError("failed to load MP3 file :(");
+        }
+        else {
+            currMusic->Play();
+        }
     }
 }
+
+
+/* Allows the user to regulate the sound volume */
 
 void MainFrame::VolumeSliderControl(wxCommandEvent& event) {
     float volumeValue = volumeSlider->GetValue();

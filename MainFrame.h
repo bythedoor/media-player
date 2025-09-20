@@ -11,6 +11,7 @@ class MainFrame : public wxFrame
         wxMediaCtrl* currMusic; // the music who will be played
         wxSlider* volumeSlider; // slider for controlling the volume of the music played
         string musicFilePath;
+        wxSlider* progressBar;
     private:
         void OnPlayButtonClicked(wxCommandEvent& event);
         void OnPauseButtonClicked(wxCommandEvent& event);
